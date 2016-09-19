@@ -12,12 +12,10 @@ import urbansimulator as us
 
 def main():
     
-    print("The width is", us.config.roadWidth(3))
-    
     rs.EnableRedraw(False)
     
-    makePlots()
-    #makeNetwork()
+    #makePlots()
+    makeNetwork()
     
     rs.EnableRedraw(True)
     
@@ -41,6 +39,5 @@ def makeNetwork():
     
     theNetwork = us.Network(thePt, theVec, 100, 15, 5)
     
-    print("got here")
 
 main()
