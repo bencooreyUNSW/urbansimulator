@@ -10,8 +10,9 @@ import scriptcontext as sc
 #Urban Simulator Libraries
 import urbansimulator as us
 
-
 def main():
+    
+    print("The width is", us.config.roadWidth(3))
     
     rs.EnableRedraw(False)
     
@@ -29,13 +30,17 @@ def makePlots():
     cP = us.Plots(cG)
     
     #Draw Plots
-    cP.shadePlots()
+    cP.drawPlots()
+    
+    theBld = us.Building(cP.plots[0][0].plotPolyline,1,5)
+    theBld.construct()
 
 def makeNetwork():
     thePt = rg.Point3d(0,0,0)
     theVec = rg.Vector3d(0,10,0)
     
     theNetwork = us.Network(thePt, theVec, 100, 15, 5)
-
+    
+    print("got here")
 
 main()

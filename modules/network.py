@@ -8,6 +8,8 @@ import scriptcontext as sc
 import math
 import random
 
+from road import *
+
 
 class Network:
     #Define and initiate the class
@@ -17,6 +19,7 @@ class Network:
         self.length = length
         self.angle = angle
         self.cnt = count
+        self.roadSegments = []
         self.drawSegments(self.startPt, self.vec, self.length, self.angle, self.cnt)
     
     def drawSegments(self, startPt, vec, length, ang, cnt):
@@ -38,20 +41,19 @@ class Network:
             
             #construct line and add to document
             line = rg.Line(startPt,newVecCont)
-            sc.doc.Objects.AddLine(line)
+            #self.roads.append
+            
+            newRoadSegment = Road(line,1)
+            self.roadSegments.append(newRoadSegment)
+            newRoadSegment.drawRoad(1)
             
             line2 = rg.Line(line.PointAt(1),newVecBranch)
             sc.doc.Objects.AddLine(line2)
             
-            theCurve = line.ToNurbsCurve()
+            newSecondaryRoadSegment = Road(line2,2)
+            self.roadSegments.append(newSecondaryRoadSegment)
+            newSecondaryRoadSegment.drawRoad(1)
             
-            curves = theCurve.Offset(rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1)), 3, sc.doc.ModelAbsoluteTolerance, rg.CurveOffsetCornerStyle.None)
-            curves2 = theCurve.Offset(rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1)), -3, sc.doc.ModelAbsoluteTolerance, rg.CurveOffsetCornerStyle.None)
-            
-            for offset_curve in curves:
-                sc.doc.Objects.AddCurve(offset_curve)
-            for offset_curve in curves2:
-                sc.doc.Objects.AddCurve(offset_curve)
             
             #increment segment count
             cnt -= 1
