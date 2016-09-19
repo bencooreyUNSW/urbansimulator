@@ -12,17 +12,20 @@ class Plot:
     def __init__(self, rect):
         #rect    Rectangle3D
         self.rect = rect
-        self.plotPolyline = None
+        self.plotPolyline = self.rect.ToPolyline()
         self.srf = None
         self.segments = None
-        
         self.guid = None
         self.bdySegments = []
         self.extractBoundaries()
         self.shade()
+        tol = sc.doc.ModelAbsoluteTolerance
+        mp = rg.AreaMassProperties.Compute(self.plotPolyline.ToNurbsCurve(), tol)
+        self.Centroid = mp.Centroid
+        self.Area = mp.Area
+        #sc.doc.Objects.AddPoint(self.Centroid)
     
     def extractBoundaries(self):
-        self.plotPolyline = self.rect.ToPolyline()
         self.segments = self.plotPolyline.GetSegments()
         if(len(self.segments) == 4):
             self.bdySegments.append(bdySegment(self.segments[0],1))
