@@ -16,8 +16,8 @@ def main():
     
     rs.EnableRedraw(False)
     
-    #makePlots()
-    makeNetwork()
+    makePlots()
+    #makeNetwork()
     
     rs.EnableRedraw(True)
     
