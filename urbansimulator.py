@@ -9,3 +9,4 @@ from modules.network import *
 from modules.building import *
 from modules.config import *
 from modules.util import *
+from modules.bdySegment import *
