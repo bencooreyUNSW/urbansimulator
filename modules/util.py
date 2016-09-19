@@ -15,3 +15,11 @@ class util:
         #width     double
         #height    double
         return rg.Rectangle3d(rg.Plane(origin, rg.Vector3d(0,0,1)), width,height)
+        
+    #Create rectangle from corner with width and height
+    @staticmethod
+    def filletCurves(curve1,curve2):
+        #origin     point3d
+        #width     double
+        #height    double
+        return rg.Rectangle3d(rg.Plane(origin, rg.Vector3d(0,0,1)), width,height)
