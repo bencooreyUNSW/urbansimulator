@@ -10,16 +10,20 @@ import scriptcontext as sc
 #Urban Simulator Libraries
 import urbansimulator as us
 
+import math
+import random
+
 def main():
     
-    rs.EnableRedraw(False)
+    #rs.EnableRedraw(False)
     
     #makePlots()
     #makeNetwork()
     #testSplitCurve()
-    testTrimOffsetCurves()
+    #testTrimOffsetCurves()
+    testCrvGenerator()
     
-    rs.EnableRedraw(True)
+    #rs.EnableRedraw(True)
     
     
 def makePlots():
@@ -50,7 +54,29 @@ def testSplitCurve():
 
 def testTrimOffsetCurves():
     crvs = rs.GetObjects("Select Curves",rs.filter.curve)
+    us.util.trimOffsetCurves(crvs)
+
+def testCrvGenerator():
     
-    print(us.util.trimOffsetCurves(crvs))
+    crv = rs.GetObject("boundary", rs.filter.curve, True)
+    bdys = []
+    bdys.append(crv)
+    
+    tval = random.random()
+    theCrv = us.util.perpLineOnCrv(crv, tval, 1,bdys)
+    bdys.append(theCrv)
+    tval = random.random()
+    theCrv2 = us.util.perpLineOnCrv(theCrv, tval, 1,bdys)
+    bdys.append(theCrv2)
+    tval = random.random()
+    theCrv3 = us.util.perpLineOnCrv(theCrv2, tval, 1,bdys)
+    bdys.append(theCrv3)
+    tval = random.random()
+    theCrv4 = us.util.perpLineOnCrv(theCrv3, tval, 1,bdys)
+    bdys.append(theCrv4)
+    tval = random.random()
+    theCrv5 = us.util.perpLineOnCrv(theCrv4, tval, 1,bdys)
+    bdys.append(theCrv5)
+
 
 main()
