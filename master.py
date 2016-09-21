@@ -51,6 +51,6 @@ def testSplitCurve():
 def testTrimOffsetCurves():
     crvs = rs.GetObjects("Select Curves",rs.filter.curve)
     
-    us.util.trimOffsetCurves(crvs)
+    print(us.util.trimOffsetCurves(crvs))
 
 main()

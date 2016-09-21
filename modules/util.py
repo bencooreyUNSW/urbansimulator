@@ -99,6 +99,8 @@ class util:
                         intersectParams[x].append(intersections[0].ParameterA)
                         intersectParams[y].append(intersections[0].ParameterB)
         
+        retGuids = []
+        
         for x in range(0, crvGuids.Count):
             if intersectParams[x][0] > intersectParams[x][1]:
                 tA = intersectParams[x][1]
@@ -107,4 +109,8 @@ class util:
                 tA = intersectParams[x][0]
                 tB = intersectParams[x][1]
                 
-            rs.TrimCurve(crvGuids[x],(tA, tB))
+            guid = rs.TrimCurve(crvGuids[x],(tA, tB))
+            if guid != None:
+                retGuids.append(guid)
+            
+        return retGuids
