@@ -6,5 +6,3 @@
 import Rhino.Geometry as rg
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
-
-obj = rs.GetObject("Select Object")
