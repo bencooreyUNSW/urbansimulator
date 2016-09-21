@@ -15,7 +15,8 @@ def main():
     rs.EnableRedraw(False)
     
     #makePlots()
-    makeNetwork()
+    #makeNetwork()
+    testSplitCurve()
     
     rs.EnableRedraw(True)
     
@@ -39,5 +40,11 @@ def makeNetwork():
     
     theNetwork = us.Network(thePt, theVec, 100, 15, 5)
     
+    
+def testSplitCurve():
+    selSrf = rs.GetObject("Select Surface", rs.filter.surface)
+    selCrvs = rs.GetObjects("Select Curves", rs.filter.curve)
+    
+    us.util.splitSrfwCrvs(selSrf,selCrvs,True,True)
 
 main()
