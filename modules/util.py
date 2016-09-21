@@ -114,3 +114,23 @@ class util:
                 retGuids.append(guid)
             
         return retGuids
+        
+    #Generate Perp Line to Closed Curve and Extend to Boundary
+    @staticmethod
+    def perpLineOnCrv(crv,t,length, bdys):
+        crvGeo = rs.coercecurve(crv)
+        crvNurbs = crvGeo.ToNurbsCurve()
+        
+        sDom = crvGeo.Domain[0]
+        eDom = crvGeo.Domain[1]
+        
+        rT = (t * (eDom - sDom)) + sDom
+        frm = crvNurbs.PerpendicularFrameAt(rT)
+        pAxis = -frm[1].XAxis
+        
+        pt = crvNurbs.PointAt(rT)
+        pLine = rg.Line(pt,pAxis,length)
+        
+        theInitCrv = sc.doc.Objects.AddLine(pLine)
+        extCrv = rs.ExtendCurve(theInitCrv,0,1,bdys)
+        return extCrv
