@@ -16,7 +16,8 @@ def main():
     
     #makePlots()
     #makeNetwork()
-    testSplitCurve()
+    #testSplitCurve()
+    testTrimOffsetCurves()
     
     rs.EnableRedraw(True)
     
@@ -46,5 +47,10 @@ def testSplitCurve():
     selCrvs = rs.GetObjects("Select Curves", rs.filter.curve)
     
     us.util.splitSrfwCrvs(selSrf,selCrvs,True,True)
+
+def testTrimOffsetCurves():
+    crvs = rs.GetObjects("Select Curves",rs.filter.curve)
+    
+    print(us.util.trimOffsetCurves(crvs))
 
 main()

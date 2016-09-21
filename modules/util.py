@@ -73,3 +73,44 @@ class util:
                 sc.doc.Objects.Delete(crv,True)
         
         sc.doc.Objects.Delete(polySrf, True)
+        
+        
+    #Get 0 to 1 T at full Curve Domain
+    @staticmethod
+    def paramAtRemappedDomain(t,sDom,eDom):
+        return (t * (eDom - sDom)) + sDom
+    
+    #Trim Offset Curves
+    @staticmethod
+    def trimOffsetCurves(crvGuids):
+        intersectParams = {}
+        
+        for x in range(0, crvGuids.Count):
+            intersectParams[x] = []
+            
+        for x in range(0, crvGuids.Count - 1):
+            for y in range(x + 1, crvGuids.Count):
+                if crvGuids[x] != crvGuids[y]:
+                    #Check Intersect Curves
+                    crvA = rs.coercecurve(crvGuids[x])
+                    crvB = rs.coercecurve(crvGuids[y])
+                    intersections = rg.Intersect.Intersection.CurveCurve(crvA,crvB,sc.doc.ModelAbsoluteTolerance,sc.doc.ModelAbsoluteTolerance)
+                    if intersections.Count > 0:
+                        intersectParams[x].append(intersections[0].ParameterA)
+                        intersectParams[y].append(intersections[0].ParameterB)
+        
+        retGuids = []
+        
+        for x in range(0, crvGuids.Count):
+            if intersectParams[x][0] > intersectParams[x][1]:
+                tA = intersectParams[x][1]
+                tB = intersectParams[x][0]
+            else:
+                tA = intersectParams[x][0]
+                tB = intersectParams[x][1]
+                
+            guid = rs.TrimCurve(crvGuids[x],(tA, tB))
+            if guid != None:
+                retGuids.append(guid)
+            
+        return retGuids
