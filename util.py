@@ -2,11 +2,23 @@
 #Set of static functions that can be used
 #Contributors: Ben Coorey
 
-import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
+import rhinoscriptsyntax as rs
 import scriptcontext as sc
 
+import math, random
+
+import urbansimulator as us
+
 class util:
+    
+    @staticmethod
+    def xyPlane():
+        return rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1))
+    
+    @staticmethod
+    def tol():
+        return sc.doc.ModelAbsoluteTolerance
     
     #Create rectangle from corner with width and height
     @staticmethod
@@ -27,18 +39,20 @@ class util:
     #Split surface with Curves
     #Contributor: Ben Coorey
     @staticmethod
-    def splitSrfwCrvs(srfGuid, crvGuids, delOrigSrf, delOrigCrvs, skipBadCrvs = True):
+    def splitSrfwCrvs(srfGuid, crvGuids, delOrigSrf, skipBadCrvs = True):
         """Split a Surface with a Set of Curves
         Parameters:
           srfGuid: the input surface ID
           crvsGuid: the input trimming curves ID
           skipBadCrvs: flag to omit bad curves or fail the script if bad curves encountered
           delOrigSrf: flag to Delete the Original Surface
-          delOrigCrvs: Flag to Delete the Original Trimming Curves
         Returns:
           True if successful
           False if not successful
         """
+        
+        retSrf = []
+        
         srf = rs.coercesurface(srfGuid)
         if srf == None:
             print("SSC001_Not a Valid Surface")
@@ -58,6 +72,7 @@ class util:
         splitSrf = rg.BrepFace.Split(srf,crvs,0.1)
         polySrf = sc.doc.Objects.AddBrep(splitSrf)
         splitSrfs = rs.ExplodePolysurfaces(polySrf)
+        retSrf = splitSrfs
         
         #Change Isocurve Density to 0 for Individual Split Surfaces
         for srf in splitSrfs:
@@ -68,12 +83,9 @@ class util:
         if delOrigSrf:
             sc.doc.Objects.Delete(srfGuid, True)
         
-        if delOrigCrvs:
-            for crv in crvGuids:
-                sc.doc.Objects.Delete(crv,True)
-        
         sc.doc.Objects.Delete(polySrf, True)
         
+        return retSrf
         
     #Get 0 to 1 T at full Curve Domain
     @staticmethod
@@ -117,8 +129,9 @@ class util:
         
     #Generate Perp Line to Closed Curve and Extend to Boundary
     @staticmethod
-    def perpLineOnCrv(crv,t,length, bdys):
-        crvGeo = rs.coercecurve(crv)
+    def perpLineOnCrv(crvGeo,t,bdys):
+        
+        rs.EnableRedraw(False)
         crvNurbs = crvGeo.ToNurbsCurve()
         
         sDom = crvGeo.Domain[0]
@@ -129,8 +142,12 @@ class util:
         pAxis = -frm[1].XAxis
         
         pt = crvNurbs.PointAt(rT)
-        pLine = rg.Line(pt,pAxis,length)
+        pLine = rg.Line(pt,pAxis,1)
         
         theInitCrv = sc.doc.Objects.AddLine(pLine)
         extCrv = rs.ExtendCurve(theInitCrv,0,1,bdys)
-        return extCrv
+        crvGeo = rs.coercecurve(extCrv)
+        
+        sc.doc.Objects.Delete(extCrv) #cleanup
+        rs.EnableRedraw(True)
+        return crvGeo
