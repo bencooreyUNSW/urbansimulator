@@ -15,13 +15,15 @@ def main():
     theLine = rs.GetObject("Pick Line", rs.filter.curve)
     theLineGeo = rs.coercecurve(theLine)
     
-    tS = us.typedSegment(theLineGeo , 0)
-    bD = us.Boundary(theLineGeo , 0)
-    rD = us.Road(theLineGeo , 0)
+    tS = us.Boundary(theLineGeo , 1)
+    tS.offsetCurve(True)
     
-    tS.offsetCurve(1)
-    bD.offsetCurve(1)
-    rD.offsetCurve(1)
+    #bD = us.Boundary(theLineGeo , 0)
+    #rD = us.Road(theLineGeo , 0)
+    
+    
+    #bD.offsetCurve(1)
+    #rD.offsetCurve(1)
     #makePlots()
     #makeNetwork()
     #testSplitCurve()

@@ -12,6 +12,14 @@ import urbansimulator as us
 
 class util:
     
+    @staticmethod
+    def xyPlane():
+        return rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1))
+    
+    @staticmethod
+    def tol():
+        return sc.doc.ModelAbsoluteTolerance
+    
     #Create rectangle from corner with width and height
     @staticmethod
     def gRect(origin,width, height):

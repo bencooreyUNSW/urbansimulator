@@ -5,10 +5,11 @@
 import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
 import scriptcontext as sc
-import math
-import random
 
-from road import *
+import math, random
+
+import urbansimulator as us
+
 
 
 class Network:

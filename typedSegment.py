@@ -5,20 +5,19 @@ import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
 import scriptcontext as sc
 
-from config import *
-
+import urbansimulator as us
 
 class typedSegment:
     #Define and initiate the class
-    def __init__(self, line, type):
-        self.startPt = line.PointAt(0)
-        self.endPt = line.PointAt(1)
-        self.line = line
+    def __init__(self, lineGeo, type):
+        self.startPt = lineGeo.PointAt(0)
+        self.endPt = lineGeo.PointAt(1)
+        self.line = lineGeo
+        self.nurbsCrv = lineGeo.ToNurbsCurve()
         self.length = self.startPt.DistanceTo(self.endPt)
         self.type = type
     
     def offsetWidth(self, type):
-        
         switcher = {
             1: 3, #TypeA
             2: 2, #TypeB
@@ -36,16 +35,14 @@ class typedSegment:
             return False
     
     def offset(self, distance, bothSides):
-        theCurve = self.line.ToNurbsCurve()
-        curves = theCurve.Offset(rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1)), distance, sc.doc.ModelAbsoluteTolerance, rg.CurveOffsetCornerStyle.None)
+        curves = self.nurbsCrv.Offset(us.util.xyPlane(), distance, us.util.tol(), rg.CurveOffsetCornerStyle.None)
         for offset_curve in curves:
             sc.doc.Objects.AddCurve(offset_curve)
             
         if bothSides:
-            curves = theCurve.Offset(rg.Plane(rg.Point3d(0,0,0),rg.Vector3d(0,0,1)), -distance, sc.doc.ModelAbsoluteTolerance, rg.CurveOffsetCornerStyle.None)
-            
+            curves = self.nurbsCrv.Offset(us.util.xyPlane(), -distance, us.util.tol(), rg.CurveOffsetCornerStyle.None)
             for offset_curve in curves:
                 sc.doc.Objects.AddCurve(offset_curve)
     
     def checkType(self):
-        return "None"
+        return "Generic"
