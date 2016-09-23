@@ -6,7 +6,6 @@ import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
 import scriptcontext as sc
 
-from plot import *
 from util import *
 
 class Plots:

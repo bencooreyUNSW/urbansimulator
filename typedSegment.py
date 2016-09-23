@@ -16,6 +16,7 @@ class typedSegment:
         self.nurbsCrv = lineGeo.ToNurbsCurve()
         self.length = self.startPt.DistanceTo(self.endPt)
         self.type = type
+        self.offsetCrvs = []
     
     def offsetWidth(self, type):
         switcher = {
@@ -35,14 +36,15 @@ class typedSegment:
             return False
     
     def offset(self, distance, bothSides):
+        
         curves = self.nurbsCrv.Offset(us.util.xyPlane(), distance, us.util.tol(), rg.CurveOffsetCornerStyle.None)
         for offset_curve in curves:
-            sc.doc.Objects.AddCurve(offset_curve)
+            self.offsetCrvs.append(offset_curve)
             
         if bothSides:
             curves = self.nurbsCrv.Offset(us.util.xyPlane(), -distance, us.util.tol(), rg.CurveOffsetCornerStyle.None)
             for offset_curve in curves:
-                sc.doc.Objects.AddCurve(offset_curve)
+                self.offsetCrvs.append(offset_curve)
     
     def checkType(self):
         return "Generic"
