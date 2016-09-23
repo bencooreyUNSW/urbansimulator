@@ -2,28 +2,33 @@
 #Main Program File
 #Contributors: Ben Coorey
 
-#Rhino Libraries
 import Rhino.Geometry as rg
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
 
-#Urban Simulator Libraries
-import urbansimulator as us
+import math, random
 
-import math
-import random
+import urbansimulator as us
 
 def main():
     
-    #rs.EnableRedraw(False)
+    theLine = rs.GetObject("Pick Line", rs.filter.curve)
+    theLineGeo = rs.coercecurve(theLine)
     
+    tS = us.typedSegment(theLineGeo , 0)
+    bD = us.Boundary(theLineGeo , 0)
+    rD = us.Road(theLineGeo , 0)
+    
+    tS.offsetCurve(1)
+    bD.offsetCurve(1)
+    rD.offsetCurve(1)
     #makePlots()
     #makeNetwork()
     #testSplitCurve()
     #testTrimOffsetCurves()
-    testCrvGenerator()
+    #testCrvGenerator()
     
-    #rs.EnableRedraw(True)
+    rs.Redraw()
     
     
 def makePlots():

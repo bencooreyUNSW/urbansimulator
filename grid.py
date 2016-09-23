@@ -2,6 +2,15 @@
 #Create a Grid
 #Contributors: Ben Coorey
 
+import Rhino.Geometry as rg
+import rhinoscriptsyntax as rs
+import scriptcontext as sc
+
+import math, random
+
+import urbansimulator as us
+
+
 class Grid:
     
     #Define and initiate the class

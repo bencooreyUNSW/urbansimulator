@@ -2,9 +2,13 @@
 #Set of static functions that can be used
 #Contributors: Ben Coorey
 
-import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
+import rhinoscriptsyntax as rs
 import scriptcontext as sc
+
+import math, random
+
+import urbansimulator as us
 
 class util:
     

@@ -1,12 +1,13 @@
-#Urban Simulator
-#Import all modules
-#Contributors: Ben Coorey
+from config import *
 
-from modules.grid import *
-from modules.plot import *
-from modules.plots import *
-from modules.network import *
-from modules.building import *
-from modules.config import *
-from modules.util import *
-from modules.bdySegment import *
+from typedSegment import *
+from road import *
+from boundary import *
+
+from grid import *
+from plot import *
+from plots import *
+from network import *
+from building import *
+from util import *
+from bdySegment import *
