@@ -11,9 +11,10 @@ class Building:
     def __init__(self,plot, offset, height):
         self.plot = plot
         self.offsetPlot = None
-        self.offset = 2
+        self.offset = offset
         self.height = height
         self.volume = None
+        self.construct()
     
     def construct(self):
         theCurve = self.plot.ToNurbsCurve()

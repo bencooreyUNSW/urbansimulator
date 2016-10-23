@@ -15,13 +15,15 @@ class Road(us.typedSegment):
     
     def offsetWidth(self, type):
         switcher = {
-            1: 8, #Primary Road
+            1: 10, #Primary Road
             2: 6, #Secondary Road
-            3: 4, #Tertiary Road
+            3: 3, #Tertiary Road
         }
         
         if(type > 0 and type < switcher.Count):
             return switcher.get(type, 0)
+        else:
+            return switcher.get(type, 3)
     
     def checkType(self):
         return "Road"

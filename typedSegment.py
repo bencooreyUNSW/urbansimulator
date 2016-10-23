@@ -32,7 +32,6 @@ class typedSegment:
         if self.offsetWidth(self.type) != None:
             self.offset( self.offsetWidth(self.type), 1)
         else:
-            "Invalid Type"
             return False
     
     def offset(self, distance, bothSides):

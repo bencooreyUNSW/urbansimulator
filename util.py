@@ -131,7 +131,6 @@ class util:
     @staticmethod
     def perpLineOnCrv(crvGeo,t,bdys):
         
-        rs.EnableRedraw(False)
         crvNurbs = crvGeo.ToNurbsCurve()
         
         sDom = crvGeo.Domain[0]
@@ -149,5 +148,4 @@ class util:
         crvGeo = rs.coercecurve(extCrv)
         
         sc.doc.Objects.Delete(extCrv) #cleanup
-        rs.EnableRedraw(True)
         return crvGeo

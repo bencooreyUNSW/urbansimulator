@@ -12,9 +12,16 @@ import urbansimulator as us
 
 def main():
     
+    #rs.EnableRedraw(False)
+    
     siteSrf = rs.GetObject("Select Precinct Boundary", rs.filter.surface)
     typedSite = us.typedSurface(siteSrf)
-    project = us.Precinct(typedSite)
+    
+    project = us.Precinct(typedSite,4)
+    
+    project.roadNetwork.draw()
+    
+    #rs.EnableRedraw(True)
     
     rs.Redraw()
 
