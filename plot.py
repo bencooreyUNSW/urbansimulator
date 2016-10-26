@@ -14,7 +14,7 @@ class Plot(us.typedSurface):
     #Define and initiate the class
     def __init__(self, srfGUID, blockType):
         us.typedSurface.__init__(self, srfGUID)
-        plotAreaMultiplier = (self.Area / 1000)
+        plotAreaMultiplier = (self.Area / 10000)
         if(plotAreaMultiplier < 1):
             plotAreaMultiplier = 1
             height = random.randint(2,3) * 4

@@ -5,6 +5,9 @@ import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
 import scriptcontext as sc
 
+import Rhino as rh
+import System.Drawing.Color as col
+
 import urbansimulator as us
 
 import math, random
@@ -126,35 +129,68 @@ class Block(us.typedSurface):
                     shrkSrfPlot = rs.ShrinkTrimmedSurface(srfPlot)
                     self.plots.append( us.Plot(srfPlot, self.blockType))
                     
-                    dir = rs.AddLine(rg.Point3d(0,0,0), rg.Point3d(0,0,.3))
-                    ext = rs.ExtrudeSurface(srfPlot,dir)
-                    theBldSite = sc.doc.Objects.Find(ext)
-                    theBldSite.Attributes.WireDensity = 0
-                    theBldSite.CommitChanges()
                     
-                    sc.doc.Objects.Delete(dir, True)
-                    rs.ObjectColor(theBldSite, (68,118,67))
+                    index = sc.doc.Materials.Add();
+                    mat = sc.doc.Materials[index]
+                    mat.DiffuseColor = col.FromArgb(68,118,67);
+                    mat.CommitChanges();
+                    
+                    attr = rh.DocObjects.ObjectAttributes();
+                    attr.MaterialIndex = index;
+                    attr.MaterialSource = rh.DocObjects.ObjectMaterialSource.MaterialFromObject;
+                    
+                    srfToExt = us.typedSurface(srfPlot)
+                    
+                    ext = sc.doc.Objects.AddExtrusion(rg.Extrusion.Create(srfToExt.border,0.3, True), attr)
+                    
+                    rs.ObjectColor(ext, (68,118,67))
                     
             else:
                 self.blockType = 4 #public building
                 self.plots.append( us.Plot(self.blockSrf, self.blockType))
                 
-                dir = rs.AddLine(rg.Point3d(0,0,0), rg.Point3d(0,0,.3))
-                ext = rs.ExtrudeSurface(self.blockSrf,dir)
+                
+                index = sc.doc.Materials.Add();
+                mat = sc.doc.Materials[index]
+                mat.DiffuseColor = col.FromArgb(168,140,54);
+                mat.CommitChanges();
+                
+                attr = rh.DocObjects.ObjectAttributes();
+                attr.MaterialIndex = index;
+                attr.MaterialSource = rh.DocObjects.ObjectMaterialSource.MaterialFromObject;
+                
+                srfToExt = us.typedSurface(self.blockSrf)
+                
+                ext = sc.doc.Objects.AddExtrusion(rg.Extrusion.Create(srfToExt.border,0.3, True), attr)
                 theBldSite = sc.doc.Objects.Find(ext)
                 theBldSite.Attributes.WireDensity = 0
                 theBldSite.CommitChanges()
                 
-                sc.doc.Objects.Delete(dir, True)
                 rs.ObjectColor(theBldSite, (168,140,54))
+                
+                
+                
+                
+                
         else:
-            dir = rs.AddLine(rg.Point3d(0,0,0), rg.Point3d(0,0,.3))
-            ext = rs.ExtrudeSurface(self.blockSrf,dir)
+            
+            index = sc.doc.Materials.Add();
+            mat = sc.doc.Materials[index]
+            mat.DiffuseColor = col.FromArgb(149,221,127);
+            mat.CommitChanges();
+            
+            attr = rh.DocObjects.ObjectAttributes();
+            attr.MaterialIndex = index;
+            attr.MaterialSource = rh.DocObjects.ObjectMaterialSource.MaterialFromObject;
+            
+            srfToExt = us.typedSurface(self.blockSrf)
+            
+            ext = sc.doc.Objects.AddExtrusion(rg.Extrusion.Create(srfToExt.border,0.3, True), attr)
+            
             thePark = sc.doc.Objects.Find(ext)
             thePark.Attributes.WireDensity = 0
             thePark.CommitChanges()
             
-            sc.doc.Objects.Delete(dir, True)
             
             rs.ObjectColor(ext, (149,221,127))
             #theSrf = sc.doc.Objects.Find(self.blockSrf)
