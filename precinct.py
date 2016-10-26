@@ -6,6 +6,9 @@ import rhinoscriptsyntax as rs
 import Rhino.Geometry as rg
 import scriptcontext as sc
 
+import Rhino as rh
+import System.Drawing.Color as col
+
 import urbansimulator as us
 
 import math, random
@@ -42,4 +45,17 @@ class Precinct:
         
         self.roadNetwork.cleanup()
         
-        rs.ObjectColor(self.typedSite.GUID, (65,65,65))
+        
+        index = sc.doc.Materials.Add();
+        mat = sc.doc.Materials[index]
+        mat.DiffuseColor = col.FromArgb(65,65,65);
+        mat.CommitChanges();
+        
+        attr = rh.DocObjects.ObjectAttributes();
+        attr.MaterialIndex = index;
+        attr.MaterialSource = rh.DocObjects.ObjectMaterialSource.MaterialFromObject;
+        
+        ext = sc.doc.Objects.AddExtrusion(rg.Extrusion.Create(self.typedSite.border,-2, True), attr)
+        sc.doc.Objects.Delete(self.typedSite.GUID, True)
+        
+        rs.ObjectColor(ext, (65,65,65))

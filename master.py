@@ -17,12 +17,12 @@ def main():
     siteSrf = rs.GetObject("Select Precinct Boundary", rs.filter.surface)
     typedSite = us.typedSurface(siteSrf)
     
-    project = us.Precinct(typedSite,4)
+    project = us.Precinct(typedSite,3)
     
     project.roadNetwork.draw()
     
-    #rs.EnableRedraw(True)
+    rs.EnableRedraw(True)
     
-    rs.Redraw()
+    #rs.Redraw()
 
 main()

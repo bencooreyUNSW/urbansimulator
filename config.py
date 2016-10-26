@@ -22,4 +22,3 @@ class config:
             4: 4, #Rear
         }
         return switcher.get(argument, 0)
-        
